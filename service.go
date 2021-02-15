@@ -24,6 +24,9 @@ func main() {
 	router.HandleFunc("/", frontend.IndexHandler)
 	//router.HandleFunc("/post", api.PlayerHandler)
 
+	fileServer := http.FileServer(http.Dir("frontend/pages/"))
+	router.PathPrefix("/").Handler(http.StripPrefix("/", fileServer))
+
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), router)
 
 	if err != nil {
